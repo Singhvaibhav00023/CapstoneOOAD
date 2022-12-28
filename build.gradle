@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.testng:testng:7.1.0'
+    implementation 'junit:junit:4.13.1'
+    implementation 'org.testng:testng:7.1.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    // https://mvnrepository.com/artifact/org.testng/testng
+    testImplementation group: 'org.testng', name: 'testng', version: '7.7.0'
+}
+
+test {
+    // useJUnitPlatform()
+    useTestNG()
+            {
+                //       includeGroups "simpleOperation";
+                useDefaultListeners =true;
+                parallel="methods";
+                testLogging.showStandardStreams(true);
+            }
+}
+
+task runTests (type: Test){
+    useTestNG()
+    testLogging.events("Passed", "Failed", "Skipped")
+}
+
+task hello
+
+hello {
+    doLast {
+        print "Hello, "
+    }
+}
+
+task world
+
+world {
+    dependsOn << hello
+    doLast {
+        println "World"
+    }
+}
+
+task HelloWorld
+
+HelloWorld {
+    dependsOn = [world,hello]
+}
